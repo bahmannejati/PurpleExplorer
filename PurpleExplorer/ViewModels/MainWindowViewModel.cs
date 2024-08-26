@@ -235,6 +235,12 @@ public class MainWindowViewModel : ViewModelBase
             await _topicHelper.GetMessagesBySubscription(CurrentSubscription.Topic.ServiceBus.ConnectionString,
                 CurrentSubscription.Topic.Name,
                 CurrentSubscription.Name);
+
+        if (CurrentSubscription == null)
+        {
+            return;
+        }
+
         CurrentSubscription.AddMessages(messages);
         Messages.AddRange(messages);
     }
@@ -265,6 +271,12 @@ public class MainWindowViewModel : ViewModelBase
         Messages.Clear();
         CurrentQueue.ClearMessages();
         var messages = await _queueHelper.GetMessages(CurrentQueue.ServiceBus.ConnectionString, CurrentQueue.Name);
+
+        if (CurrentQueue == null)
+        {
+            return;
+        }
+
         CurrentQueue.AddMessages(messages);
         Messages.AddRange(messages);
     }
