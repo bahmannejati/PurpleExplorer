@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using DynamicData;
 using ReactiveUI;
+using PurpleExplorer.Helpers;
 
 namespace PurpleExplorer.Models;
 
@@ -50,8 +52,15 @@ public abstract class MessageCollection : ReactiveObject
 
     public void RemoveMessage(string messageId)
     {
-        Messages.Remove(Messages.Single(msg => msg.MessageId.Equals(messageId)));
-        MessageCount = Messages.Count;
+        try 
+        {
+            Messages.Remove(Messages.Single(msg => msg.MessageId.Equals(messageId)));
+            MessageCount = Messages.Count;
+        } catch (Exception ex)
+        {
+            BaseHelper.LogException(ex);
+            BaseHelper.ShowErrorMessage("An error occurred, but you can continue working.");
+        }
     }
         
     public void ClearMessages()

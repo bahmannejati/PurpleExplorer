@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.ServiceBus.Core;
 using Microsoft.Azure.ServiceBus.Management;
@@ -55,5 +56,19 @@ public abstract class BaseHelper
         return connectionString.UseManagedIdentity
             ? new QueueClient(connectionString.ConnectionString, queueName, GetTokenProvider(connectionString))
             : new QueueClient(connectionString.ConnectionString, queueName);
+    }
+
+    public static void LogException(Exception? ex)
+    {
+        if (ex != null)
+        {
+            File.AppendAllText("error.log", $"{DateTime.Now}: {ex.Message}\n{ex.StackTrace}\n\n");
+        }
+    }
+
+    public static void ShowErrorMessage(string message)
+    {
+        var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Error", message);
+        messageBox.Show();
     }
 }
