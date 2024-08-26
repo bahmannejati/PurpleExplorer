@@ -24,20 +24,8 @@ public class QueueHelper : BaseHelper, IQueueHelper
     public async Task<IList<ServiceBusQueue>> GetQueues(ServiceBusConnectionString connectionString)
     {
         var client = GetManagementClient(connectionString);
-        List<ServiceBusQueue> queues = new List<ServiceBusQueue>();
-
-        try
-        {
-            queues = await GetQueues(client);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error occurred: {ex.Message}");
-        }
-        finally
-        {
-            await client.CloseAsync();
-        }
+        var queues = await GetQueues(client);
+        await client.CloseAsync();
         return queues;
     }
 
